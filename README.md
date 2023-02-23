@@ -2,6 +2,28 @@
 
 Repository for Stateful pod migration.
 
+## Local build
+
+### Prerequisites
+
+- [act](https://github.com/nektos/act)
+- [docker](https://docs.docker.com/engine/install/ubuntu/)
+
+You can store your secrets on a _secrets.txt_ file or just pass them with the _-s_ flag. The _-j_ flag is used to trigger which job you want to run. 
+
+
+```Bash
+act -j build_and_publish --secret-file ../secrets.txt
+```
+
+If you don't want to use act (to run GitHub actions locally) you can just build and push everything using docker.
+
+```Bash
+docker build . --tag ghcr.io/leonardopoggiani/virtual-kubelet:latest
+
+docker push ghcr.io/leonardopoggiani/virtual-kubelet:latest
+```
+
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 

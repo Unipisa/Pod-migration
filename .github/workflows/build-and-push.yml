@@ -16,17 +16,18 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       
-    - name: Install dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get -y install golang-go
-        
+    - name: Install GO enviroment
+      uses: actions/setup-go@v3
+      with:
+        go-version: '>=1.20.0'
+
     - name: Build submodules
       run: |
         cd liqo
-        go build -o liqo .
+        go build -o virtual-kubelet ./cmd/virtual-kubelet
+        go build -o liqonet ./cmd/liqonet
         cd ../live-migration-operator
         go build -o live-migration-operator .
 
@@ -39,8 +40,8 @@ jobs:
     - name: Build and push Docker images
       run: |
         cd liqo
-        docker build -t ${DOCKER_USERNAME}/liqo:latest .
-        docker push ${DOCKER_USERNAME}/liqo:latest
+        docker build -t ${DOCKER_USERNAME}/virtual-kubelet:latest .
+        docker push ${DOCKER_USERNAME}/virtual-kubelet:latest
         cd ../live-migration-operator
         docker build -t ${DOCKER_USERNAME}/live-migration-operator:latest .
         docker push ${DOCKER_USERNAME}/live-migration-operator:latest
@@ -56,9 +57,9 @@ jobs:
       run: |
         cd liqo
         echo ${{ env.GHCR_TOKEN }} | docker login ghcr.io -u ${{ env.GHCR_USERNAME }} --password-stdin
-        docker tag ${DOCKER_USERNAME}/submodule1:latest ghcr.io/${{ env.GHCR_USERNAME }}/liqo:latest
-        docker push ghcr.io/${{ env.GHCR_USERNAME }}/liqo:latest
+        docker tag ${DOCKER_USERNAME}/virtual-kubelet:latest ghcr.io/${{ env.GHCR_USERNAME }}/virtual-kubelet:latest
+        docker push ghcr.io/${{ env.GHCR_USERNAME }}/virtual-kubelet:latest
         cd ../live-migration-operator
         echo ${{ env.GHCR_TOKEN }} | docker login ghcr.io -u ${{ env.GHCR_USERNAME }} --password-stdin
-        docker tag ${DOCKER_USERNAME}/submodule2:latest ghcr.io/${{ env.GHCR_USERNAME }}/live-migration-operator:latest
+        docker tag ${DOCKER_USERNAME}/live-migration-operator:latest ghcr.io/${{ env.GHCR_USERNAME }}/live-migration-operator:latest
         docker push ghcr.io/${{ env.GHCR_USERNAME }}/live-migration-operator:latest
