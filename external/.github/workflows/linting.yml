@@ -1,0 +1,32 @@
+name: Run Tests and Linting
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  tests-and-linting:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.20.x
+
+    - name: Install Linters
+      run: |
+        go install golang.org/x/lint/golint
+        go install github.com/golangci/golangci-lint/cmd/golangci-lint
+
+    - name: Run Linters
+      run: |
+        golint ./...
+        golangci-lint run ./...
+
+    - name: Run Tests
+      run: |
+        go test -v ./...
