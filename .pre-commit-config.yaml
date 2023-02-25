@@ -14,3 +14,6 @@ repos:
     hooks:
     -   id: terraform_docs
     -   id: terraform_fmt
+    -   id: checkov
+    -   id: infracost_breakdown
+    -   id: terraform validate
