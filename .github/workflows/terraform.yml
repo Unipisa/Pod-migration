@@ -36,6 +36,7 @@ jobs:
       - name: Google Cloud Auth
         uses: 'google-github-actions/auth@v1'
         with:
+          project_id: 'tidy-federation-377908'
           workload_identity_provider: 'https://iam.googleapis.com/projects/2660355116/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
           service_account: '2660355116-compute@developer.gserviceaccount.com'
 
