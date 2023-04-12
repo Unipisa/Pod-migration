@@ -1,0 +1,9 @@
+[submodule "live-migration-operator"]
+	path = live-migration-operator
+	url = https://github.com/leonardopoggiani/live-migration-operator
+[submodule "liqo"]
+	path = liqo
+	url = https://github.com/leonardopoggiani/liqo
+[submodule "external-provisioner"]
+	path = external-provisioner
+	url = https://github.com/leonardopoggiani/external-provisioner
