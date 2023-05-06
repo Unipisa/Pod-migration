@@ -2,8 +2,8 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/external-provisioner" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/liqo" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/live-migration-operator" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/performance_evaluation" vcs="Git" />
   </component>
 </project>
