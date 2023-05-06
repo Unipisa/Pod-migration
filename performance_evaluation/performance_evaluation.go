@@ -15,7 +15,6 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
-	"k8s.io/klog/v2"
 )
 
 func getCheckpointSize(clientset *kubernetes.Clientset, numContainers int) {
@@ -204,10 +203,15 @@ func getTotalTime(clientset *kubernetes.Clientset, numContainers int) (time.Dura
 	// Get the start time of the checkpoint
 	start := time.Now()
 
+	LiveMigrationReconciler.checkpointPodPipelined(containers, "default", pod.Name)
+	LiveMigrationReconciler.buildahRestorePipelined(containers, "default", pod.Name)
+
 	// Calculate the time taken for the checkpoint
 	elapsed := time.Since(start)
 
 	fmt.Printf("Checkpoint took %s\n", elapsed)
+
+	return 0, nil
 }
 
 func getCheckpointTime(clientset *kubernetes.Clientset, numContainers int) (time.Duration, error) {
@@ -479,19 +483,19 @@ func main() {
 
 	kubeconfigPath = os.ExpandEnv(kubeconfigPath)
 	if _, err := os.Stat(kubeconfigPath); os.IsNotExist(err) {
-		klog.ErrorS(err, "kubeconfig file not existing")
+		fmt.Println("kubeconfig file not existing")
 	}
 
 	kubeconfig, err := clientcmd.BuildConfigFromFlags("", kubeconfigPath)
 	if err != nil {
-		klog.ErrorS(err, "Failed to retrieve kubeconfig")
+		fmt.Println("Failed to retrieve kubeconfig")
 		return
 	}
 
 	// Create Kubernetes API client
 	clientset, err := kubernetes.NewForConfig(kubeconfig)
 	if err != nil {
-		klog.ErrorS(err, "failed to create Kubernetes client")
+		fmt.Println("failed to create Kubernetes client")
 		return
 	}
 
