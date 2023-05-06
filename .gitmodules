@@ -4,6 +4,3 @@
 [submodule "liqo"]
 	path = liqo
 	url = https://github.com/leonardopoggiani/liqo
-[submodule "external-provisioner"]
-	path = external-provisioner
-	url = https://github.com/leonardopoggiani/external-provisioner
